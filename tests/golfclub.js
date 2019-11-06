@@ -53,9 +53,11 @@ const makeDiff = (imageName, browserName) => {
         ignoreAntialiasing: true,
         ignoreCaret: true
     }, function() {
+        console.log("There is not diff")
         return true;
     });
 
+    console.log("There is diff");
     return false;
 };
 
