@@ -13,6 +13,22 @@ const etalonsPath = "tests/etalons/";
 const screenshotsPath = "tests/screenshots/";
 const diffPath = "tests/diff/";
 
+const waitReadyState = ClientFunction(() => {
+    return new Promise(resolve => {
+        const interval = setInterval(() => {
+            if(window.isReady) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            resolve();
+        }, 120000);
+    });
+});
+
 const clientFunc1 = ClientFunction(() => {
     document.getElementsByClassName("details")[0].innerHTML = "Fri 04 - Fri 11, September 2015";
     document.getElementsByClassName("dx-button-text")[4].innerHTML = "30 Aug-5 Sep 2015";
@@ -46,6 +62,8 @@ const makeDiff = (imageName, browserName) => {
 test("log in", async t => {
     const ua  = await getUA();
     const screenshotSuffix = "_" +  useragent.parse(ua).family + ".png";
+
+    await waitReadyState();
 
     await t
         .takeScreenshot("GolfClub_Home_view" + screenshotSuffix);

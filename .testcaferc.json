@@ -1,5 +1,7 @@
 {
     "screenshots": {
         "path": "tests/screenshots"
-    }
+    },
+    "appCommand": "ng serve",
+    "appInitDelay": 30000
 }

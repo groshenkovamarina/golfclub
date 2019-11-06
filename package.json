@@ -11,7 +11,7 @@
     "serve:ssr": "node dist/server.js",
     "build:client-and-server-bundles": "ng build --prod && ng run golfclub:server:production",
     "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
-    "test": "npm i && testcafe chrome tests/ --app \"ng serve\" --app-init-delay 30000"
+    "test": "testcafe chrome tests/"
   },
   "dependencies": {
     "@angular/animations": "^8.0.0",
