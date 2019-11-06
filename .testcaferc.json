@@ -4,5 +4,5 @@
     },
     "appCommand": "ng serve",
     "appInitDelay": 30000,
-    "browsers": ["firefox", "chrome"]
+    "browsers": ["firefox:headless", "chrome:headless"]
 }
