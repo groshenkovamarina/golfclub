@@ -70,7 +70,7 @@ test("log in", async t => {
 
     await t
         .expect(makeDiff("GolfClub_Home_view", screenshotSuffix)).notOk("Test failed. GolfClub_Home_view_diff is created")
-        //.click(Selector(".log-in.authorization"))
+        .click(Selector(".log-in.authorization"))
         .takeScreenshot("GolfClub_Login_Popup" + screenshotSuffix)
 
     await t
