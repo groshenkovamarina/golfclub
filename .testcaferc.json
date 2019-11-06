@@ -3,5 +3,6 @@
         "path": "tests/screenshots"
     },
     "appCommand": "ng serve",
-    "appInitDelay": 30000
+    "appInitDelay": 30000,
+    "browsers": ["firefox", "chrome"]
 }
