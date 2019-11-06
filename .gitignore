@@ -25,6 +25,10 @@ npm-debug.log
 testem.log
 /typings
 
+# testing
+/tests/screenshots/
+/tests/diff/
+
 #System Files
 .DS_Store
 Thumbs.db

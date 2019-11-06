@@ -10,7 +10,8 @@
     "build:ssr": "npm run build:client-and-server-bundles && npm run webpack:server",
     "serve:ssr": "node dist/server.js",
     "build:client-and-server-bundles": "ng build --prod && ng run golfclub:server:production",
-    "webpack:server": "webpack --config webpack.server.config.js --progress --colors"
+    "webpack:server": "webpack --config webpack.server.config.js --progress --colors",
+    "test": "npm i && testcafe chrome tests/ --app \"ng serve\" --app-init-delay 30000"
   },
   "dependencies": {
     "@angular/animations": "^8.0.0",
@@ -53,6 +54,9 @@
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
     "typescript": "~3.4.1",
-    "webpack-cli": "^2.1.3"
+    "webpack-cli": "^2.1.3",
+    "testcafe": "^1.2.0",
+    "useragent": "^2.3.0",
+    "looks-same": "^7.2.2"
   }
 }
