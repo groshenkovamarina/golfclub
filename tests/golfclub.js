@@ -1,6 +1,8 @@
-import { ClientFunction, Selector } from "testcafe";
+import { ClientFunction, Selector, t } from "testcafe";
 import useragent from "useragent";
 import looksSame from "looks-same";
+import fs from "fs";
+import https from "https";
 
 fixture `golfclub tests`
     .page("http://localhost:4200/")
@@ -42,41 +44,68 @@ const clientFunc2 = ClientFunction(() => {
 const getUA = ClientFunction(() => navigator.userAgent);
 
 const makeDiff = (imageName, browserName) => {
-    looksSame.createDiff({
-        reference: etalonsPath + imageName + browserName,
-        current: screenshotsPath + imageName + browserName,
-        diff: diffPath + imageName + "_diff" + browserName,
-        highlightColor: '#ff00ff',
-        strict: false,
-        tolerance: 2.5,
-        antialiasingTolerance: 0,
-        ignoreAntialiasing: true,
-        ignoreCaret: true
-    }, function() {
-        console.log("There is not diff")
-        return true;
-    });
+    return new Promise (resolve => { looksSame(
+        etalonsPath + imageName + browserName,
+        screenshotsPath + imageName + browserName,
+        (error, details) => {
+            if(error) console.log(error);
 
-    console.log("There is diff");
-    return false;
+            if(!details.equal) {
+                looksSame.createDiff({
+                    reference: etalonsPath + imageName + browserName,
+                    current: screenshotsPath + imageName + browserName,
+                    diff: diffPath + imageName + "_diff" + browserName,
+                    highlightColor: '#ff00ff',
+                    strict: true,
+                    ignoreCaret: true
+                }, (error) => {
+                    if(error) console.log(error);
+                    const imageAsBase64 = fs.readFileSync(diffPath + imageName + "_diff" + browserName, "base64");
+
+                    const options = {
+                        url: "https://api.imgbb.com",
+                        path: "1/upload?key=5a6b49adad4228e6b2478608733cb134",
+                        method: "POST",
+                        body: {
+                            form: imageAsBase64
+                        }
+                    }
+                    
+                    const request = https.request(options, (response) => {
+                        console.log(response);
+                    });
+
+
+                });
+            }
+
+            resolve(details.equal);
+    });
+})
 };
 
 test("log in", async t => {
     const ua  = await getUA();
-    const screenshotSuffix = "_" +  useragent.parse(ua).family + ".png";
+    const screenshotSuffix = "_" +  useragent.parse(ua).family.replace("Headless", "") + ".png";
+    let diff = true;
 
     await waitReadyState();
 
     await t
         .takeScreenshot("GolfClub_Home_view" + screenshotSuffix);
 
-    await t
-        .expect(makeDiff("GolfClub_Home_view", screenshotSuffix)).notOk("Test failed. GolfClub_Home_view_diff is created")
-        .click(Selector(".log-in.authorization"))
-        .takeScreenshot("GolfClub_Login_Popup" + screenshotSuffix)
+
+    diff = await makeDiff("GolfClub_Home_view", screenshotSuffix);
 
     await t
-        .expect(makeDiff("GolfClub_Login_Popup", screenshotSuffix)).notOk("Test failed. GolfClub_Login_Popup_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Home_view_diff is created")
+        .click(Selector(".log-in.authorization"))
+        .takeScreenshot("GolfClub_Login_Popup" + screenshotSuffix);
+
+    diff = await makeDiff("GolfClub_Login_Popup", screenshotSuffix);
+
+    await t
+        .expect(diff).ok("Test failed. GolfClub_Login_Popup_diff is created")
         .typeText(Selector(".dx-texteditor-input").nth(5), "admin")
         .pressKey("tab")
         .typeText(Selector(".dx-texteditor-input").nth(6), "admin")
@@ -85,7 +114,8 @@ test("log in", async t => {
 
 test("booking", async t => {
     const ua  = await getUA();
-    const screenshotSuffix = "_" +  useragent.parse(ua).family + ".png";
+    const screenshotSuffix = "_" +  useragent.parse(ua).family.replace("Headless", "") + ".png";
+    let diff = true;
 
     await t
         .click(Selector(".dx-dropdowneditor-icon").nth(0))
@@ -102,13 +132,17 @@ test("booking", async t => {
         .wait(2000)
         .takeScreenshot("GolfClub_Search_View" + screenshotSuffix)
 
+    diff = await makeDiff("GolfClub_Search_View", screenshotSuffix);
+
     await t
-        .expect(makeDiff("GolfClub_Search_View", screenshotSuffix)).notOk("Test failed. GolfClub_Search_View_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Search_View_diff is created")
         .click(Selector(".button").nth(2))
         .takeScreenshot("GolfClub_Book_Popup" + screenshotSuffix)
 
+    diff = await makeDiff("GolfClub_Book_Popup", screenshotSuffix);
+
     await t
-        .expect(makeDiff("GolfClub_Book_Popup", screenshotSuffix)).notOk("Test failed. GolfClub_Book_Popup_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Book_Popup_diff is created")
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".button-popup").nth(1))
         .click(Selector(".button").nth(1))
@@ -121,14 +155,18 @@ test("booking", async t => {
         .wait(2000)
         .takeScreenshot("GolfClub_Info_View" + screenshotSuffix)
 
+    diff = await makeDiff("GolfClub_Info_View", screenshotSuffix);
+
     await t
-        .expect(makeDiff("GolfClub_Info_View", screenshotSuffix)).notOk("Test failed. GolfClub_Info_View_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Info_View_diff is created")
         .click(Selector(".button"))
         .wait(2000)
         .takeScreenshot("GolfClub_Info_View_Book_Popup" + screenshotSuffix);
 
+    diff = await makeDiff("GolfClub_Info_View_Book_Popup", screenshotSuffix);
+
     await t
-        .expect(makeDiff("GolfClub_Info_View_Book_Popup", screenshotSuffix)).notOk("Test failed. GolfClub_Info_View_Book_Popup_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Info_View_Book_Popup_diff is created")
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".button"))
 
@@ -162,7 +200,8 @@ test("change search", async t => {
 
     
     const ua  = await getUA();
-    const screenshotSuffix = "_" +  useragent.parse(ua).family + ".png";
+    const screenshotSuffix = "_" +  useragent.parse(ua).family.replace("Headless", "") + ".png";
+    let diff = true;
 
     await t
         .click(Selector(".dx-dropdowneditor-icon").nth(0))
@@ -178,8 +217,10 @@ test("change search", async t => {
         .click(Selector(".green-button").withText("Change Search"))
         .takeScreenshot("GolfClub_Search_View_Search_Popup" + screenshotSuffix);
 
+    diff = await makeDiff("GolfClub_Search_View_Search_Popup", screenshotSuffix);
+
     await t
-        .expect(makeDiff("GolfClub_Search_View_Search_Popup", screenshotSuffix)).notOk("Test failed. GolfClub_Search_View_Search_Popup_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Search_View_Search_Popup_diff is created")
         .click(Selector(".dx-dropdowneditor-icon").nth(0))
         .click(Selector(".dx-list-item-content").nth(3))
         .click(Selector(".search"));
@@ -193,8 +234,10 @@ test("change search", async t => {
         .click(Selector(".green-button").withText("Change Search"))
         .takeScreenshot("GolfClub_Info_View_Search_Popup" + screenshotSuffix);
 
+    diff = await makeDiff("GolfClub_Info_View_Search_Popup", screenshotSuffix);
+
     await t
-        .expect(makeDiff("GolfClub_Info_View_Search_Popup", screenshotSuffix)).notOk("Test failed. GolfClub_Info_View_Search_Popup_diff is created")
+        .expect(diff).ok("Test failed. GolfClub_Info_View_Search_Popup_diff is created")
         .click(Selector(".dx-dropdowneditor-icon").nth(0))
         .click(Selector(".dx-list-item-content").nth(2))
         .click(Selector(".search"));
