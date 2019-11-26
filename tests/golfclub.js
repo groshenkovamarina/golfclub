@@ -142,14 +142,14 @@ test("booking", async t => {
     isDiff = await checkDiff("GolfClub_Search_View", screenshotSuffix);
 
     await t
-        //.expect(isDiff).ok("Test failed. GolfClub_Search_View_diff is created")
+        .expect(isDiff).ok("Test failed.")
         .click(Selector(".button").nth(2))
         .takeScreenshot("GolfClub_Book_Popup" + screenshotSuffix)
 
     isDiff = await checkDiff("GolfClub_Book_Popup", screenshotSuffix);
 
     await t
-        //.expect(isDiff).ok("Test failed. GolfClub_Book_Popup_diff is created")
+        .expect(isDiff).ok("Test failed.")
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".button-popup").nth(1))
         .click(Selector(".button").nth(1))
@@ -228,10 +228,10 @@ test("change search", async t => {
     await t
         .click(Selector(".dx-item.dx-tab").nth(0))
         .click(Selector(".dx-item.dx-tab").nth(2))
+        .click(Selector(".image").nth(2));
 
     await t
-        .navigateTo("http://localhost:4200/clubs;location=4;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;holes=18;players=2")
-        .click(Selector(".image").nth(2));
+        .navigateTo("http://localhost:4200/info;location=4;clubId=11;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;players=2;holes=9")
 
     await t
         .click(Selector(".green-button").withText("Change Search"))
