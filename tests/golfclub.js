@@ -48,6 +48,25 @@ const clientFunc2 = ClientFunction(() => {
     document.getElementsByClassName("dx-button-text")[1].innerHTML = "10-16 November 2019";
 });
 
+const loadImage = (imagePath) => {
+    const imageAsBase64 = fs.readFileSync(imagePath, "base64");
+    const options = {
+        url: "https://api.imgbb.com/1/upload?key=5a6b49adad4228e6b2478608733cb134",
+        method: "POST",
+        form: {
+            image: imageAsBase64
+        }
+    }
+
+    request(options, (error, response) => {
+        if(error) console.log(error);
+
+        const url = JSON.parse(response.body).data.url;
+
+        console.log(imagePath + " is created " + url);
+    });
+}
+
 const checkDiff = (imageName, browserName) => {
 
     return new Promise (resolve => { 
@@ -85,25 +104,11 @@ const checkDiff = (imageName, browserName) => {
         })
     }).then(isDiffCreated => {
         if(isDiffCreated) {
-            const imageAsBase64 = fs.readFileSync(getImagesPath(imageName, browserName).diff, "base64");
-            const options = {
-                url: "https://api.imgbb.com/1/upload?key=5a6b49adad4228e6b2478608733cb134",
-                method: "POST",
-                form: {
-                    image: imageAsBase64
-                }
-            }
-        
             return new Promise((resolve) => {
-                request(options, (error, response) => {
-                    if(error) console.log(error);
+                loadImage(getImagesPath(imageName, browserName).screenshot)
+                loadImage(getImagesPath(imageName, browserName).diff)
 
-                    const diffUrl = JSON.parse(response.body).data.url;
-                    const diffHref = new URL(diffUrl);
-
-                    resolve(true)
-                    console.log(getImagesPath(imageName, browserName).diff + " is created " + diffHref.href);
-                });
+                resolve(true);
             })
         }
     })
