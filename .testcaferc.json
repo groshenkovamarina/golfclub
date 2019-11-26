@@ -3,6 +3,6 @@
         "path": "tests/screenshots"
     },
     "appCommand": "ng serve",
-    "appInitDelay": 30000,
+    "appInitDelay": 120000,
     "browsers": ["chrome:headless"]
 }
