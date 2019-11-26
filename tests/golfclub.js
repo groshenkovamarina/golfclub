@@ -16,11 +16,11 @@ const getUA = ClientFunction(() => {
     let browserName = "";
 
     if(ua.indexOf("Chrome") >= 0) {
-        browserName = "chrome";
+        browserName = "Chrome";
     } else if(ua.indexOf("Firefox") >= 0) {
-        browserName = "ff";
+        browserName = "Firefox";
     } else {
-        browserName = "ie";
+        browserName = "IE";
     }
 
     return "_" + browserName + ".png";
