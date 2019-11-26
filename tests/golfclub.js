@@ -47,13 +47,15 @@ const loadImage = (imagePath) => {
             image: imageAsBase64
         }
     }
+    return new Promise((resolve) => {
+        request(options, (error, response) => {
+            if(error) console.log(error);
 
-    request(options, (error, response) => {
-        if(error) console.log(error);
+            const url = JSON.parse(response.body).data.url;
 
-        const url = JSON.parse(response.body).data.url;
-
-        console.log(imagePath + " is created " + url);
+            resolve();
+            console.log(imagePath + " is created " + url);
+        });
     });
 }
 
@@ -95,10 +97,11 @@ const checkDiff = (imageName, browserName) => {
     }).then(isDiffCreated => {
         if(isDiffCreated) {
             return new Promise((resolve) => {
-                loadImage(getImagesPath(imageName, browserName).screenshot)
-                loadImage(getImagesPath(imageName, browserName).diff)
-
-                resolve(true);
+                loadImage(getImagesPath(imageName, browserName).screenshot).then(() => {
+                    loadImage(getImagesPath(imageName, browserName).diff).then(() => {
+                        resolve(true);
+                    });
+                });
             })
         }
     })
