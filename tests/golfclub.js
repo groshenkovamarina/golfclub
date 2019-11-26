@@ -38,16 +38,6 @@ const getImagesPath = (imageName, browserName) => {
     };
 }
 
-const clientFunc1 = ClientFunction(() => {
-    document.getElementsByClassName("details")[0].innerHTML = "Mon 11-Mon 18, November 2019";
-    document.getElementsByClassName("dx-button-text")[4].innerHTML = "10-16 November 2019";
-});
-
-const clientFunc2 = ClientFunction(() => {
-    document.getElementsByClassName("details")[2].innerHTML = "Mon 11-Mon 18, November 2019";
-    document.getElementsByClassName("dx-button-text")[1].innerHTML = "10-16 November 2019";
-});
-
 const loadImage = (imagePath) => {
     const imageAsBase64 = fs.readFileSync(imagePath, "base64");
     const options = {
@@ -121,7 +111,6 @@ test("log in", async t => {
     await t
         .takeScreenshot("GolfClub_Home_view" + screenshotSuffix);
 
-
     isDiff = await checkDiff("GolfClub_Home_view", screenshotSuffix);
 
     await t
@@ -144,24 +133,8 @@ test("booking", async t => {
     let isDiff = false;
 
     await t
-        .click(Selector(".dx-dropdowneditor-icon").nth(0))
-        .click(Selector(".dx-list-item-content").nth(1))
-        .click(Selector(".dx-dropdowneditor-icon").nth(1))
-        .wait(2000)
-        .click(Selector(".dx-calendar-today"))
-        .click(Selector(".search"));
+        .navigateTo("http://localhost:4200/clubs;location=2;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;holes=18;players=2")
 
-    
-    await clientFunc1();
-
-    // await t
-    //     .click(Selector(".dx-scheduler-navigator-caption"))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-cell").withText("2019"))
-    //     .click(Selector(".dx-calendar-cell").withText("Nov"))
-    //     .click(Selector(".dx-calendar-cell").withText("15"))
-    
     await t
         .wait(2000)
         .takeScreenshot("GolfClub_Search_View" + screenshotSuffix)
@@ -183,15 +156,8 @@ test("booking", async t => {
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".image").nth(1));
 
-    await clientFunc2();
-
-    // await t
-    //     .click(Selector(".dx-scheduler-navigator-caption"))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-cell").withText("2019"))
-    //     .click(Selector(".dx-calendar-cell").withText("Nov"))
-    //     .click(Selector(".dx-calendar-cell").withText("15"));
+    await t
+        .navigateTo("http://localhost:4200/info;location=2;clubId=4;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;players=2;holes=9")
 
     await t
         .wait(2000)
@@ -243,21 +209,8 @@ test("change search", async t => {
     let isDiff = false;
 
     await t
-        .click(Selector(".dx-dropdowneditor-icon").nth(0))
-        .click(Selector(".dx-list-item-content").nth(0))
-        .click(Selector(".dx-dropdowneditor-icon").nth(1))
-        .wait(2000)
-        .click(Selector(".dx-calendar-today"))
-        .click(Selector(".search"));
+        .navigateTo("http://localhost:4200/clubs;location=1;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;holes=18;players=2")
 
-    // await t
-    //     .click(Selector(".dx-scheduler-navigator-caption"))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-cell").withText("2019"))
-    //     .click(Selector(".dx-calendar-cell").withText("Nov"))
-    //     .click(Selector(".dx-calendar-cell").withText("15"))
-    
     await t
         .click(Selector(".dx-item.dx-tab").nth(0))
         .click(Selector(".dx-item.dx-tab").nth(2))
@@ -272,19 +225,13 @@ test("change search", async t => {
         .click(Selector(".dx-list-item-content").nth(3))
         .click(Selector(".search"));
 
-    
-    // await t
-    //     .click(Selector(".dx-scheduler-navigator-caption"))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-caption-button").nth(0))
-    //     .click(Selector(".dx-calendar-cell").withText("2019"))
-    //     .click(Selector(".dx-calendar-cell").withText("Nov"))
-    //     .click(Selector(".dx-calendar-cell").withText("15"))
-
     await t
         .click(Selector(".dx-item.dx-tab").nth(0))
         .click(Selector(".dx-item.dx-tab").nth(2))
         .click(Selector(".image").nth(2));
+
+    await t
+        .navigateTo("http://localhost:4200/clubs;location=4;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;holes=18;players=2")
 
     await t
         .click(Selector(".green-button").withText("Change Search"))
