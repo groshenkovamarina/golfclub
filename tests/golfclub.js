@@ -145,14 +145,14 @@ test("booking", async t => {
     isDiff = await checkDiff("GolfClub_Search_View", screenshotSuffix);
 
     await t
-        .expect(isDiff).ok("Test failed.")
+        .expect(isDiff).notOk("Test failed.")
         .click(Selector(".button").nth(2))
         .takeScreenshot("GolfClub_Book_Popup" + screenshotSuffix)
 
     isDiff = await checkDiff("GolfClub_Book_Popup", screenshotSuffix);
 
     await t
-        .expect(isDiff).ok("Test failed.")
+        .expect(isDiff).notOk("Test failed.")
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".button-popup").nth(1))
         .click(Selector(".button").nth(1))
@@ -169,7 +169,7 @@ test("booking", async t => {
     isDiff = await checkDiff("GolfClub_Info_View", screenshotSuffix);
 
     await t
-        .expect(isDiff).ok("Test failed.")
+        .expect(isDiff).notOk("Test failed.")
         .click(Selector(".button"))
         .wait(2000)
         .takeScreenshot("GolfClub_Info_View_Book_Popup" + screenshotSuffix);
@@ -177,7 +177,7 @@ test("booking", async t => {
     isDiff = await checkDiff("GolfClub_Info_View_Book_Popup", screenshotSuffix);
 
     await t
-        .expect(isDiff).ok("Test failed.")
+        .expect(isDiff).notOk("Test failed.")
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".button"))
 
