@@ -114,14 +114,14 @@ test("log in", async t => {
     isDiff = await checkDiff("GolfClub_Home_view", screenshotSuffix);
 
     await t
-        //.expect(isDiff).notOk("Test failed")
+        .expect(isDiff).notOk("Test failed")
         .click(Selector(".log-in.authorization"))
         .takeScreenshot("GolfClub_Login_Popup" + screenshotSuffix);
 
     isDiff = await checkDiff("GolfClub_Login_Popup", screenshotSuffix);
 
     await t
-        //.expect(isDiff).notOk("Test failed")
+        .expect(isDiff).notOk("Test failed")
         .typeText(Selector(".dx-texteditor-input").nth(5), "admin")
         .pressKey("tab")
         .typeText(Selector(".dx-texteditor-input").nth(6), "admin")
@@ -166,7 +166,7 @@ test("booking", async t => {
     isDiff = await checkDiff("GolfClub_Info_View", screenshotSuffix);
 
     await t
-        //.expect(isDiff).ok("Test failed. GolfClub_Info_View_diff is created")
+        .expect(isDiff).ok("Test failed.")
         .click(Selector(".button"))
         .wait(2000)
         .takeScreenshot("GolfClub_Info_View_Book_Popup" + screenshotSuffix);
@@ -174,7 +174,7 @@ test("booking", async t => {
     isDiff = await checkDiff("GolfClub_Info_View_Book_Popup", screenshotSuffix);
 
     await t
-        //.expect(isDiff).ok("Test failed. GolfClub_Info_View_Book_Popup_diff is created")
+        .expect(isDiff).ok("Test failed.")
         .click(Selector(".button-popup").nth(0))
         .click(Selector(".button"))
 
@@ -220,7 +220,7 @@ test("change search", async t => {
     isDiff = await checkDiff("GolfClub_Search_View_Search_Popup", screenshotSuffix);
 
     await t
-        //.expect(isDiff).notOk("Test failed")
+        .expect(isDiff).notOk("Test failed")
         .click(Selector(".dx-dropdowneditor-icon").nth(0))
         .click(Selector(".dx-list-item-content").nth(3))
         .click(Selector(".search"));
@@ -228,10 +228,10 @@ test("change search", async t => {
     await t
         .click(Selector(".dx-item.dx-tab").nth(0))
         .click(Selector(".dx-item.dx-tab").nth(2))
-        .click(Selector(".image").nth(2));
 
     await t
         .navigateTo("http://localhost:4200/clubs;location=4;startDate=11%2F11%2F2019;endDate=11%2F18%2F2019;holes=18;players=2")
+        .click(Selector(".image").nth(2));
 
     await t
         .click(Selector(".green-button").withText("Change Search"))
@@ -240,7 +240,7 @@ test("change search", async t => {
     isDiff = await checkDiff("GolfClub_Info_View_Search_Popup", screenshotSuffix);
 
     await t
-        //.expect(isDiff).notOk("Test failed")
+        .expect(isDiff).notOk("Test failed")
         .click(Selector(".dx-dropdowneditor-icon").nth(0))
         .click(Selector(".dx-list-item-content").nth(2))
         .click(Selector(".search"));
