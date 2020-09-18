@@ -2,9 +2,8 @@ import { ClientFunction, Selector} from "testcafe";
 import looksSame from "looks-same";
 import fs from "fs";
 import request from "request";
-import imbbConig from "../imbb-config.js";
 
-console.log(imbbConig);
+console.log(process.argv);
 
 fixture `golfclub tests`
     .page("http://localhost:4200/")
