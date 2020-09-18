@@ -3,7 +3,7 @@ import looksSame from "looks-same";
 import fs from "fs";
 import request from "request";
 
-console.log(process.argv);
+console.log(process.env.npm_config_imbb_key);
 
 fixture `golfclub tests`
     .page("http://localhost:4200/")
@@ -43,7 +43,7 @@ const getImagesPath = (imageName, browserName) => {
 const loadImage = (imagePath) => {
     const imageAsBase64 = fs.readFileSync(imagePath, "base64");
     const options = {
-        url: "https://api.imgbb.com/1/upload?key=5a6b49adad4228e6b2478608733cb134",
+        url: "https://api.imgbb.com/1/upload?key=" + process.env.npm_config_imbb_key,
         method: "POST",
         form: {
             image: imageAsBase64
