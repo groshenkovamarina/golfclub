@@ -26,5 +26,6 @@ before_install:
 install:
   - npm install
 
-script: 
+script:
+  - echo 'imbb key = ${IMBB_KEY}'
   - npm run test --imbb_key=$IMBB_KEY
