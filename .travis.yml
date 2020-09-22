@@ -16,9 +16,6 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
 
-env:
-  IMBB_KEY: ${{ secrets.IMBB_KEY }}
-
 before_install:
   - sudo apt-get update
   - sudo apt-get -y install libxml2-dev
@@ -27,5 +24,4 @@ install:
   - npm install
 
 script:
-  - echo 'imbb key = ${IMBB_KEY}'
   - npm run test --imbb_key=$IMBB_KEY
